@@ -18,13 +18,17 @@ router.get("/:alias", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   var requestBody = req.body;
   if (!requestBody) {
-    res.json({ message: "No json attached to request" });
+    return res.json({ message: "No json attached to request" });
   }
   var originalURL = requestBody.originalURL;
+  if (!validURL(originalURL)) {
+    return res.json({ message: "Invalid url provided" });
+  }
   var alias = requestBody.alias;
   if (!alias) {
     alias = crypto.randomBytes(4).toString("hex");
   }
+
   var newShortenURL = new ShortenURL({
     originalURL,
     alias,
@@ -32,6 +36,9 @@ router.post("/", async (req, res, next) => {
   try {
     await newShortenURL.save();
   } catch (e) {
+    if (e.code === 11000) {
+      return res.status(400).json({ message: "Alias already taken" });
+    }
     return next(e);
   }
   res.json({
@@ -39,5 +46,18 @@ router.post("/", async (req, res, next) => {
     shortenURL: "/" + alias,
   });
 });
+
+function validURL(str) {
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return !!pattern.test(str);
+}
 
 module.exports = router;
