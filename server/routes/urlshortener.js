@@ -22,7 +22,7 @@ router.post("/", async (req, res, next) => {
   }
   var originalURL = requestBody.originalURL;
   if (!validURL(originalURL)) {
-    return res.json({ message: "Invalid url provided" });
+    return res.status(400).json({ message: "Invalid url provided" });
   }
   var alias = requestBody.alias;
   if (!alias) {
