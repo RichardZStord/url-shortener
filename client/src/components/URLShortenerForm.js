@@ -7,13 +7,13 @@ import logo from "../logo.png";
 function URLShortenerForm(props) {
   return (
     <Form>
-      <Container className="url-shortener-form d-flex bg-dark text-white m-auto align-items-center justify-content-center flex-column py-5">
-        <Row className="w-75 align-items-center justify-content-center">
+      <Container className="m-2 pe-4 url-shortener-form d-flex bg-dark text-white m-auto align-items-center justify-content-center flex-column py-5">
+        <Row className="w-100 align-items-center justify-content-center">
           <Col className="d-flex justify-content-center align-items-center">
             <img src={logo} alt="URL converter logo" className="logo" />
           </Col>
-          <Col>
-            <h2>URL Shortener</h2>
+          <Col className="p-5">
+            <h2 className="text-light">URL Shortener</h2>
             <Form.Group className="mb-3" controlId="originalUrl">
               <Form.Label>Original URL</Form.Label>
               <Form.Control type="url" placeholder="Enter URL" />
