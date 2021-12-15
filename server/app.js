@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var cors = require("cors");
 require("dotenv").config();
 
 var shortenerRouter = require("./routes/urlshortener");
@@ -11,6 +12,12 @@ var shortenerRouter = require("./routes/urlshortener");
 var app = express();
 
 // view engine setup
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200,
+  })
+);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 

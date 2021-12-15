@@ -3,6 +3,12 @@ const ShortenURL = require("../models/ShortenURL");
 var crypto = require("crypto");
 var router = express.Router();
 
+router.get("/", (req, res, next) => {
+  res.json({
+    message: "Successfully called the api in localhost:8080",
+  });
+});
+
 router.get("/:alias", async (req, res, next) => {
   var alias = req.params.alias;
   var shortenURL = await ShortenURL.findOne({ alias: alias });
@@ -42,8 +48,7 @@ router.post("/", async (req, res, next) => {
     return next(e);
   }
   res.json({
-    message: "Successfully created a shortened URL for " + originalURL,
-    shortenURL: "/" + alias,
+    message: `http://localhost:8080/${alias} now links to ${originalURL}`,
   });
 });
 
