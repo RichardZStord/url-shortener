@@ -1,10 +1,10 @@
-.url-shortener-form {
+.url-shortener-form,
+.no-short-url-box {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
-  width: fit-content;
   height: fit-content;
   border-radius: 10px;
   padding-left: 0 !important;
@@ -34,4 +34,33 @@
   z-index: -5;
   width: 100vw;
   height: 100vh;
+}
+
+.invalid-feedback {
+  display: block !important;
+  visibility: hidden !important;
+}
+
+.was-validated :invalid ~ .invalid-feedback {
+  display: block !important;
+  visibility: visible !important;
+}
+
+.feedback-message {
+  position: absolute;
+  overflow: auto;
+  width: 550px;
+  height: 50px;
+}
+
+@media (min-width: 768px) {
+  .feedback-message {
+    width: 300px;
+  }
+}
+
+@media (min-width: 992px) {
+  .feedback-message {
+    width: 550px;
+  }
 }

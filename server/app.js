@@ -28,9 +28,15 @@ app.use(cookieParser());
 
 require("./config/mongoConfig");
 
-app.use(express.static(path.join(__dirname, "public")));
-
 app.use("/", shortenerRouter);
+
+app.use(express.static("public"));
+
+app.use("/:alias", (req, res, next) => {
+  // This middleware would be reached if alias was not found in
+  // database
+  res.status(404).sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

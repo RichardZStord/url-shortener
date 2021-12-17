@@ -3,20 +3,12 @@ const ShortenURL = require("../models/ShortenURL");
 var crypto = require("crypto");
 var router = express.Router();
 
-router.get("/", (req, res, next) => {
-  res.json({
-    message: "Successfully called the api in localhost:8080",
-  });
-});
-
 router.get("/:alias", async (req, res, next) => {
   var alias = req.params.alias;
   try {
     var shortenURL = await ShortenURL.findOne({ alias: alias });
     if (!shortenURL) {
-      return res.status(400).json({
-        message: "URL alias is not linked with another url",
-      });
+      return next();
     }
     var originalURL = shortenURL.originalURL;
     res.redirect(originalURL);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
@@ -65,7 +65,7 @@ function URLShortenerForm(props) {
       validated={feedBack.validated}
       noValidate
     >
-      <Container className="m-2 pe-4 url-shortener-form d-flex bg-dark text-white m-auto align-items-center justify-content-center flex-column py-5">
+      <Container className="m-2 url-shortener-form d-flex bg-dark text-white m-auto align-items-center justify-content-center flex-column py-5">
         <Row className="w-100 align-items-center justify-content-center">
           <Col className="d-flex justify-content-center align-items-center">
             <img src={logo} alt="URL converter logo" className="logo ms-3" />
@@ -80,9 +80,6 @@ function URLShortenerForm(props) {
                 name="originalURL"
                 required={true}
               />
-              <Form.Text className="text-muted">
-                Must be in URL format
-              </Form.Text>
               <Form.Control.Feedback type="invalid" data-testid="form_feedback">
                 A valid URL must be provided
               </Form.Control.Feedback>
@@ -108,7 +105,8 @@ function URLShortenerForm(props) {
             )}
             <p
               className={
-                feedBack.successful ? "mt-2 text-light" : "mt-2 text-danger"
+                (feedBack.successful ? "mt-2 text-light" : "mt-2 text-danger") +
+                " feedback-message"
               }
             >
               {feedBack.message}

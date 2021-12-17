@@ -2,6 +2,7 @@ const request = require("supertest");
 const express = require("express");
 const mongoose = require("mongoose");
 const ShortenURL = require("./models/ShortenURL");
+const path = require("path");
 const app = express();
 
 const urlShortenerRouter = require("./routes/urlshortener");
@@ -12,6 +13,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", urlShortenerRouter);
+app.use(express.static("public"));
+app.use("/:alias", (req, res, next) => {
+  // This middleware would be reached if alias was not found in
+  // database
+  res.status(404).sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 beforeAll(async () => {
   await initializeMongoServer();
@@ -140,12 +147,12 @@ describe("GET / redirects", () => {
       .expect("Location", "http://www.facebook.com/");
   });
 
-  test("GET / with unknown alias sends an error JSON", async () => {
-    const res = await request(app).get(`/adsfnw`).expect(400);
-
-    expect(res.body.message).toEqual(
-      "URL alias is not linked with another url"
-    );
+  test("GET / with unknown alias renders not found page", async () => {
+    const res = await request(app)
+      .get(`/adsfnw`)
+      .expect(404)
+      .expect("content-type", /html/);
+    console.log(res);
   });
 });
 
