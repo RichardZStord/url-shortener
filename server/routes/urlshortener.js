@@ -13,7 +13,7 @@ router.get("/:alias", async (req, res, next) => {
   var alias = req.params.alias;
   var shortenURL = await ShortenURL.findOne({ alias: alias });
   if (!shortenURL) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "URL alias is not linked with another url",
     });
   }
@@ -23,12 +23,14 @@ router.get("/:alias", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   var requestBody = req.body;
-  if (!requestBody) {
-    return res.json({ message: "No json attached to request" });
+  if (!requestBody.originalURL) {
+    return res
+      .status(400)
+      .json({ message: 'Attached JSON has no "originalURL" property' });
   }
   var originalURL = requestBody.originalURL;
   if (!validURL(originalURL)) {
-    return res.status(400).json({ message: "Invalid url provided" });
+    return res.status(400).json({ message: "Invalid URL provided" });
   }
   var alias = requestBody.alias;
   if (!alias) {
@@ -49,6 +51,7 @@ router.post("/", async (req, res, next) => {
   }
   res.json({
     message: `http://localhost:8080/${alias} now links to ${originalURL}`,
+    alias: alias,
   });
 });
 
