@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import App from "./app";
 
-test('renders learn react link', () => {
+test("URL Shortener Form renders without crashing", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText("URL Shortener")).toBeInTheDocument();
 });

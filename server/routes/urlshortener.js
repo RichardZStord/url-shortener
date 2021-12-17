@@ -11,14 +11,18 @@ router.get("/", (req, res, next) => {
 
 router.get("/:alias", async (req, res, next) => {
   var alias = req.params.alias;
-  var shortenURL = await ShortenURL.findOne({ alias: alias });
-  if (!shortenURL) {
-    return res.status(400).json({
-      message: "URL alias is not linked with another url",
-    });
+  try {
+    var shortenURL = await ShortenURL.findOne({ alias: alias });
+    if (!shortenURL) {
+      return res.status(400).json({
+        message: "URL alias is not linked with another url",
+      });
+    }
+    var originalURL = shortenURL.originalURL;
+    res.redirect(originalURL);
+  } catch (e) {
+    return next(e);
   }
-  var originalURL = shortenURL.originalURL;
-  res.redirect(originalURL);
 });
 
 router.post("/", async (req, res, next) => {

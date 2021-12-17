@@ -22,20 +22,28 @@ function URLShortenerForm(props) {
     if (e.currentTarget.checkValidity() === false) {
       return;
     }
-    setLoading(true);
-    const formData = new FormData(e.currentTarget);
-    var res = await fetch("/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        originalURL: formData.get("originalURL"),
-        alias: formData.get("alias"),
-      }),
-    });
-    var resultJson = await res.json();
+    try {
+      setLoading(true);
+      const formData = new FormData(e.currentTarget);
+      var res = await fetch("/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          originalURL: formData.get("originalURL"),
+          alias: formData.get("alias"),
+        }),
+      });
+      var resultJson = await res.json();
+    } catch (e) {
+      setFeedBack({
+        ...feedBack,
+        message: e.message,
+        successful: false,
+      });
+    }
     setLoading(false);
     if (res.status >= 400) {
       setFeedBack({
@@ -51,14 +59,6 @@ function URLShortenerForm(props) {
       });
     }
   };
-  useEffect(() => {
-    async function testConnectionToAPI() {
-      const res = await fetch("http://localhost:8080/");
-      const json = await res.json();
-      console.log(json);
-    }
-    testConnectionToAPI();
-  }, []);
   return (
     <Form
       onSubmit={handleSubmit.bind(this)}
@@ -83,7 +83,7 @@ function URLShortenerForm(props) {
               <Form.Text className="text-muted">
                 Must be in URL format
               </Form.Text>
-              <Form.Control.Feedback type="invalid">
+              <Form.Control.Feedback type="invalid" data-testid="form_feedback">
                 A valid URL must be provided
               </Form.Control.Feedback>
             </Form.Group>
