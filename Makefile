@@ -19,5 +19,6 @@ server:
 # `make test` will be used after `make setup` in order to run
 # your test suite.
 test:
-	cd server; npm test;
 	cd client; npm run test;
+	cd server; npm test;
+	
