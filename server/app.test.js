@@ -20,6 +20,8 @@ app.use("/:alias", (req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+jest.setTimeout(5000);
+
 beforeAll(async () => {
   await initializeMongoServer();
 });
@@ -152,7 +154,6 @@ describe("GET / redirects", () => {
       .get(`/adsfnw`)
       .expect(404)
       .expect("content-type", /html/);
-    console.log(res);
   });
 });
 

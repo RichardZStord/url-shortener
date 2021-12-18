@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { render, screen, waitFor } from "@testing-library/react";
 import URLShortenerForm from "./URLShortenerForm";
 import userEvent from "@testing-library/user-event";

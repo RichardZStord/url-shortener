@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,8 +39,11 @@
   "proxy": "http://localhost:8080",
   "devDependencies": {
     "@testing-library/react": "^12.1.2",
-    "jest": "^26.6.0",
+    "jest": "^22.4.4",
     "jest-fetch-mock": "^3.0.3",
     "react-router-dom": "^6.1.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
